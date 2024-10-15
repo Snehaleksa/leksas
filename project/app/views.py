@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from django.contrib.auth.hashers import make_password
 from .models import CustomUser,Student
-from .serializers import PostSerializer,CustomUserSerializer
+from .serializers import CustomUserSerializer
 
 # Create your views here.
 
@@ -12,7 +12,7 @@ from .serializers import PostSerializer,CustomUserSerializer
 def register(request):
     if request.method == 'POST':
         data = request.data
-        serializer = PostSerializer(data=data)
+        serializer = CustomUserSerializer(data=data)
         
         if serializer.is_valid():
             serializer.save() 
