@@ -1,24 +1,38 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.http import JsonResponse
 
 from django.contrib.auth.hashers import make_password
-from .models import CustomUser,Student
-from .serializers import CustomUserSerializer
+from .models import User,Student
+from .serializers import PostSerializer,UserSerializer
 
 # Create your views here.
-
-@api_view(['GET', 'POST'])
-def register(request):
-    if request.method == 'POST':
-        data = request.data
-        serializer = CustomUserSerializer(data=data)
+def studentlog(data):
+    user=User(username=data['username'],password=make_password(data['password']))
+    user.save()
+    return user
+class StudentRegister(APIView):
+  def post(self,request,format=None):
+    try:
+        student=request.data.get('student')
+        print(student)
+        data=request.data.get('data')
+        print(data)
+        stdlog=studentlog(student)
+        print(stdlog)
+        student_data=Student.objects.create(
+            user_id=stdlog,
+            Name=data['name'],
+            Phone=data['phone'],
+            Address=data['address'],
+            Branch=data['branch'],
+            RollNo=data['rollno']
+        )
+        student_data.save()
         
-        if serializer.is_valid():
-            serializer.save() 
-            return Response({"success": "Student registered successfully"}, status=201)
-        else:
-            return Response(serializer.errors, status=400)
-    
-    elif request.method == 'GET':
-        return Response({"message": "Send a POST request with user details to register a student."}, status=400)
+    except Exception as e:
+       print(e)
+       data1={"status":0}
+       return JsonResponse(data1,safe=False)
