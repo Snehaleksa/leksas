@@ -9,4 +9,6 @@ urlpatterns=[
     path('register/student',StudentRegister.as_view(),name="studentregister"),
     path('api/token/',TokenObtainPairView.as_view()),
     path('api/token/refresh',TokenRefreshView.as_view()),
+    
+    path('UserProfile/',UserProfile.as_view()),
 ]

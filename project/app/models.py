@@ -13,6 +13,6 @@ class Student(models.Model):
     name=models.CharField(max_length=100)
     phone=models.IntegerField()
     address=models.CharField(max_length=100)
-    branch=models.IntegerField()
+    branch=models.CharField(max_length=100)
     rollno=models.IntegerField()
        
